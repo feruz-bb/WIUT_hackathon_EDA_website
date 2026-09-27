@@ -1,6 +1,6 @@
 # WIUT Hackathon EDA Website
 
-# WIUT Hackathon 2026 — Reviewer Note
+
 **Team ID:** `8BA88A02`  
 **Task:** Financial Alert Escalation Prediction  
 **Evaluation Metric:** ROC-AUC  
