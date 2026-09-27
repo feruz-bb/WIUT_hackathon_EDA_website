@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTech Alert Escalation — EDA Report | Team 8BA88A02</title>
+    <meta name="description" content="Exploratory Data Analysis of financial alert escalation prediction for the WIUT Hackathon. Team 8BA88A02's approach to identifying behavioral patterns in transaction data.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-brand">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="8" fill="#1a56db"/>
+                            <path d="M8 16L14 10L20 16L14 22Z" fill="white" opacity="0.8"/>
+                            <path d="M14 16L20 10L26 16L20 22Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="header-title">FinTech Alert Escalation</h1>
+                        <p class="header-subtitle">Exploratory Data Analysis Report</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <span class="badge badge-primary">Team 8BA88A02</span>
+                    <span class="badge badge-secondary">WIUT Hackathon 2026</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-sticky" id="navSticky">
+        <div class="container">
+            <div class="nav-links">
+                <a href="#approach" class="nav-link active">Approach</a>
+                <a href="#overview" class="nav-link">Dataset</a>
+                <a href="#target" class="nav-link">Target</a>
+                <a href="#transactions" class="nav-link">Transactions</a>
+                <a href="#temporal" class="nav-link">Temporal</a>
+                <a href="#behavioral" class="nav-link">Behavioral</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#conclusion" class="nav-link">Conclusion</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <!-- Section 1: Approach -->
+        <section id="approach" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">01</span>
+                    <h2 class="section-title">Our Approach</h2>
+                </div>
+                <div class="approach-grid">
+                    <div class="approach-card">
+                        <div class="approach-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        </div>
+                        <h3>Problem Understanding</h3>
+                        <p>A financial-sector monitoring unit generates automated alerts from customers' transaction history. Each alert is either <strong>dismissed</strong> or <strong>escalated</strong> for investigation. Our goal: predict the probability of escalation using historical transaction patterns.</p>
+                    </div>
+                    <div class="approach-card">
+                        <div class="approach-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                        </div>
+                        <h3>EDA-Driven Feature Engineering</h3>
+                        <p>We performed deep exploratory analysis to understand behavioral patterns. Each signal has ~500 associated transactions — we engineered <strong>246 features</strong> and applied rigorous feature selection to isolate the <strong>Top-75 high-impact features</strong>, eliminating noise.</p>
+                    </div>
+                    <div class="approach-card">
+                        <div class="approach-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                        </div>
+                        <h3>Optuna Tuning & Ensemble</h3>
+                        <p>We conducted 200 Optuna optimization trials for <strong>LightGBM, XGBoost, and CatBoost</strong>, discovering that shallow trees and heavy regularization prevent overfitting. We ensembled <strong>15 models across 5 random seeds</strong>, achieving <strong>0.6505 ROC-AUC</strong>.</p>
+                    </div>
+                    <div class="approach-card">
+                        <div class="approach-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        </div>
+                        <h3>Key Strategy</h3>
+                        <p>Our analysis revealed that <strong>transaction volume, net cash flow direction, and recent activity intensity</strong> are the strongest signals for escalation. Escalated alerts tend to have more transactions, different incoming/outgoing patterns, and higher recent activity spikes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Dataset Overview -->
+        <section id="overview" class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">02</span>
+                    <h2 class="section-title">Dataset Overview</h2>
+                </div>
+                <p class="section-desc">The dataset contains synthetic financial transaction records associated with automated monitoring alerts. Each alert (signal) links to a variable number of historical transactions.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTrainSignals">14,000</div>
+                        <div class="stat-label">Training Signals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTestSignals">6,000</div>
+                        <div class="stat-label">Test Signals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTrainTxn">6.99M</div>
+                        <div class="stat-label">Training Transactions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTestTxn">3.03M</div>
+                        <div class="stat-label">Test Transactions</div>
+                    </div>
+                    <div class="stat-card stat-highlight">
+                        <div class="stat-value">~499</div>
+                        <div class="stat-label">Avg Transactions per Signal</div>
+                    </div>
+                    <div class="stat-card stat-highlight">
+                        <div class="stat-value">17.2%</div>
+                        <div class="stat-label">Escalation Rate</div>
+                    </div>
+                </div>
+
+                <div class="data-structure">
+                    <h3 class="subsection-title">Data Structure</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>signal_id</code></td>
+                                    <td>Unique alert identifier</td>
+                                    <td>String</td>
+                                    <td>SG_000001</td>
+                                </tr>
+                                <tr>
+                                    <td><code>signal_sanasi</code></td>
+                                    <td>Date the alert was generated</td>
+                                    <td>Date</td>
+                                    <td>2025-07-11</td>
+                                </tr>
+                                <tr>
+                                    <td><code>tranzaksiya_vaqti</code></td>
+                                    <td>Transaction timestamp</td>
+                                    <td>DateTime</td>
+                                    <td>2024-07-06 08:47:18</td>
+                                </tr>
+                                <tr>
+                                    <td><code>kirim_chiqim</code></td>
+                                    <td>Direction: incoming (kirim) or outgoing (chiqim)</td>
+                                    <td>Categorical</td>
+                                    <td>kirim / chiqim</td>
+                                </tr>
+                                <tr>
+                                    <td><code>tranzaksiya_turi</code></td>
+                                    <td>Transaction type</td>
+                                    <td>Categorical</td>
+                                    <td>karta, bank_otkazmasi, naqd, xalqaro</td>
+                                </tr>
+                                <tr>
+                                    <td><code>miqdor_indeksi</code></td>
+                                    <td>Standardized transaction-size indicator</td>
+                                    <td>Float</td>
+                                    <td>0.236, -0.799</td>
+                                </tr>
+                                <tr class="row-highlight">
+                                    <td><code>eskalatsiya</code></td>
+                                    <td>Target: escalated (1) or dismissed (0)</td>
+                                    <td>Binary</td>
+                                    <td>0 / 1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Target Distribution -->
+        <section id="target" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">03</span>
+                    <h2 class="section-title">Target Distribution & Class Imbalance</h2>
+                </div>
+                <p class="section-desc">The target variable shows moderate class imbalance — only 17.2% of alerts are escalated. This imbalance informed our choice to use class-weighted training and stratified cross-validation.</p>
+                
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h3 class="chart-title">Alert Classification Distribution</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartTargetDist"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title">Monthly Escalation Rate</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartMonthlyEscalation"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-header">
+                        <span class="insight-pill">Analyst Note</span>
+                        <h4 class="insight-title">Target Distribution & Temporal Invariance</h4>
+                    </div>
+                    <p class="insight-text">
+                        The escalation rate hovers consistently around <strong>17.2%</strong> across all recorded months without sudden seasonal swings. This empirical stability means the risk signal stems from individual behavioral anomalies rather than macro-calendar trends — which significantly reduces the risk of distribution shift between our training folds and the hidden test set.
+                    </p>
+                    <div class="insight-footer">
+                        <span class="footer-label">Engineering Decision:</span>
+                        <span>Instead of synthetic oversampling (which distorts dense transaction counts), we preserved natural transaction distributions and countered the 1:4.8 imbalance directly in model loss functions via <code>is_unbalance=True</code> in LightGBM and <code>scale_pos_weight=4.82</code> in XGBoost.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Transaction Analysis -->
+        <section id="transactions" class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">04</span>
+                    <h2 class="section-title">Transaction Behavior Analysis</h2>
+                </div>
+                
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h3 class="chart-title">Transaction Count: Dismissed vs Escalated</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartTxnCount"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title">Transaction Types by Escalation Status</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartTxnTypes"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h3 class="chart-title">Amount Distribution (miqdor_indeksi)</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartAmountDist"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title">Average Amount by Transaction Type</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartTypeAmounts"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-header">
+                        <span class="insight-pill">Analyst Note</span>
+                        <h4 class="insight-title">Activity Frequency vs. Ticket Compression</h4>
+                    </div>
+                    <p class="insight-text">
+                        Accounts flagged for escalation average <strong>6.1% higher transaction velocity</strong> (524 vs. 494 transactions), yet their individual transaction amounts trend slightly smaller and more negative (-0.116 vs. -0.045 standardized index). Escalated accounts exhibit higher-frequency, fragmented movements rather than rare large-ticket transfers.
+                    </p>
+                    <div class="insight-footer">
+                        <span class="footer-label">Engineering Decision:</span>
+                        <span>We engineered transaction cadence, inter-arrival time standard deviations, and 10 quantile amount histogram bins to expose this high-frequency, smaller-ticket clustering directly to tree splitters.</span>
+                    </div>
+                </div>
+
+                <div class="mini-stats">
+                    <div class="mini-stat">
+                        <span class="mini-stat-label">Avg Txns (Dismissed)</span>
+                        <span class="mini-stat-value">494</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-stat-label">Avg Txns (Escalated)</span>
+                        <span class="mini-stat-value highlight-blue">524</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-stat-label">Avg Amount (Dismissed)</span>
+                        <span class="mini-stat-value">-0.045</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-stat-label">Avg Amount (Escalated)</span>
+                        <span class="mini-stat-value highlight-blue">-0.116</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Temporal Analysis -->
+        <section id="temporal" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">05</span>
+                    <h2 class="section-title">Temporal Patterns</h2>
+                </div>
+                <p class="section-desc">We analyzed transaction timing to discover patterns in when transactions occur relative to escalation outcomes. This includes hourly distribution, day-of-week patterns, and monthly trends.</p>
+                
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h3 class="chart-title">Hourly Transaction Distribution</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartHourly"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title">Day of Week Activity</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartDow"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-row">
+                    <div class="chart-container chart-container-wide">
+                        <h3 class="chart-title">Monthly Transaction Volume Over Time</h3>
+                        <div class="chart-wrapper chart-wrapper-wide">
+                            <canvas id="chartMonthly"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-header">
+                        <span class="insight-pill">Analyst Note</span>
+                        <h4 class="insight-title">Batch Processing Artifacts & Pre-Alert Velocity</h4>
+                    </div>
+                    <p class="insight-text">
+                        The sharp transaction spike observed at <strong>23:00 (11 PM)</strong> appears identically across both escalated and dismissed accounts, characteristic of automated end-of-day banking batch sweeps rather than human fraud. In contrast, the true discriminative signal lies in the <strong>30-day pre-signal window</strong>, where escalated accounts exhibit a 4.2% acceleration in transaction frequency (81.2 vs. 77.9).
+                    </p>
+                    <div class="insight-footer">
+                        <span class="footer-label">Engineering Decision:</span>
+                        <span>Constructed dynamic pre-signal lookback ratios (<code>w30_vs_90_ratio</code>, <code>amount_acceleration</code>) to detect sudden activity ramp-ups against a customer's long-term historical baseline.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Behavioral Patterns -->
+        <section id="behavioral" class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">06</span>
+                    <h2 class="section-title">Behavioral Patterns & Insights</h2>
+                </div>
+                
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h3 class="chart-title">Incoming (Kirim) vs Outgoing (Chiqim) Ratio</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartDirectionRatio"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title">Direction × Escalation Analysis</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="chartDirectionAnalysis"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="findings-grid">
+                    <div class="finding-card">
+                        <span class="finding-badge">Direction Ratio</span>
+                        <h4>Cash Inflow Dominance</h4>
+                        <p>~75% of all transactions are incoming (kirim). Escalated alerts show a subtle drop in the kirim ratio (74.4% vs 75.0%), signaling altered liquidity flow before an escalation.</p>
+                    </div>
+                    <div class="finding-card">
+                        <span class="finding-badge">+6.1% Volume</span>
+                        <h4>Account Turnover Volume</h4>
+                        <p>Escalated alerts average 524 transactions vs 494 for dismissed accounts. Higher overall activity volume consistently correlates with elevated scrutiny.</p>
+                    </div>
+                    <div class="finding-card">
+                        <span class="finding-badge">Size Shift</span>
+                        <h4>Compressed Ticket Sizes</h4>
+                        <p>Outgoing transactions average positive standardized amounts while incoming average negative. Escalated signals show compressed outgoing tickets (0.100 vs 0.165).</p>
+                    </div>
+                    <div class="finding-card">
+                        <span class="finding-badge">+4.2% Velocity</span>
+                        <h4>30-Day Pre-Alert Surge</h4>
+                        <p>In the 30-day window immediately preceding an alert, escalated accounts accelerate to 81.2 transactions vs 77.9, establishing recent momentum as a key feature.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Feature Engineering -->
+        <section id="features" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">07</span>
+                    <h2 class="section-title">Feature Engineering & Modeling</h2>
+                </div>
+                <p class="section-desc">Based on our EDA findings, we engineered <strong>246 features</strong> from the raw transaction data across 8 behavioral dimensions, then applied permutation and split-importance selection to isolate the optimal <strong>Top-75 high-impact features</strong>, eliminating noise.</p>
+                
+                <div class="feature-categories">
+                    <div class="feature-cat">
+                        <h4>Basic Aggregates</h4>
+                        <p>Count, mean, std, min, max, median, skew, IQR, range, and coefficient of variation of transaction amounts</p>
+                    </div>
+                    <div class="feature-cat">
+                        <h4>Direction Features</h4>
+                        <p>Separate statistics for kirim/chiqim, ratios between directions, net cash flow, and per-transaction net flow</p>
+                    </div>
+                    <div class="feature-cat">
+                        <h4>Type Features</h4>
+                        <p>Per-type (karta, bank_otkazmasi, naqd, xalqaro) counts, amounts, and usage ratios</p>
+                    </div>
+                    <div class="feature-cat">
+                        <h4>Time & Entropy</h4>
+                        <p>Activity span, recency, frequency, night/weekend ratios, hour distribution, day-of-week entropy</p>
+                    </div>
+                    <div class="feature-cat">
+                        <h4>Window Dynamics</h4>
+                        <p>Fine-grained pre-signal transaction stats within 3, 7, 14, 30, 60, 90, 120, and 150-day windows</p>
+                    </div>
+                    <div class="feature-cat">
+                        <h4>Behavioral & Sequence</h4>
+                        <p>Inter-transaction time stats, burstiness, direction switch rates, type change rates, and cross direction×type</p>
+                    </div>
+                    <div class="feature-cat">
+                        <h4>Temporal Acceleration</h4>
+                        <p>Momentum features measuring transaction volume acceleration and amount deviation over time</p>
+                    </div>
+                    <div class="feature-cat">
+                        <h4>Histogram Bins</h4>
+                        <p>Quantile amount binning capturing the distribution of micro vs. macro transactional activity</p>
+                    </div>
+                </div>
+
+                <!-- Experiment Progression Table -->
+                <div style="margin-top: 2.5rem;">
+                    <h3 class="subsection-title">Iterative Experiment Progression</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Experiment</th>
+                                    <th>Methodology / Innovation</th>
+                                    <th>Features</th>
+                                    <th>Models</th>
+                                    <th>OOF ROC-AUC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Exp 01</strong></td>
+                                    <td>Baseline Feature Engineering (aggregates & ratios)</td>
+                                    <td>126</td>
+                                    <td>Default LightGBM</td>
+                                    <td>0.6300</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Exp 02</strong></td>
+                                    <td>v2 Comprehensive Features (acceleration, windows, bins)</td>
+                                    <td>246</td>
+                                    <td>LGB + XGB + CAT</td>
+                                    <td>0.6406</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Exp 03</strong></td>
+                                    <td>Optuna Bayesian Optimization (200 trials: discovered shallow trees depth 2-3)</td>
+                                    <td>246</td>
+                                    <td>Tuned LGB, CAT, XGB</td>
+                                    <td>0.6420</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Exp 04</strong></td>
+                                    <td>Feature Selection (eliminated 171 noisy & harmful features)</td>
+                                    <td><strong>Top 75</strong></td>
+                                    <td>Tuned LightGBM</td>
+                                    <td>0.6443</td>
+                                </tr>
+                                <tr style="background: rgba(26, 86, 219, 0.05); font-weight: 600;">
+                                    <td><strong>Exp 05 (Final)</strong></td>
+                                    <td><strong>Optimal Ensemble: Top-75 Features + Optuna Models × 5 Seeds</strong></td>
+                                    <td><strong>Top 75</strong></td>
+                                    <td><strong>15 Models (Weighted)</strong></td>
+                                    <td><span style="color: #1a56db; font-size: 1.05rem; font-weight: 700;">0.6505</span> <span class="badge badge-primary" style="font-size: 10px; padding: 2px 6px; vertical-align: middle;">Best</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="chart-container chart-container-wide" style="margin-top: 2rem;">
+                    <h3 class="chart-title">Top Feature Importances (from 0.6505 Model Ensemble)</h3>
+                    <div class="chart-wrapper chart-wrapper-wide">
+                        <canvas id="chartFeatureImportance"></canvas>
+                    </div>
+                </div>
+
+                <div class="model-summary">
+                    <h3 class="subsection-title">Final Model Performance (5-Fold CV)</h3>
+                    <div class="model-cards" id="modelCards">
+                        <div class="model-card">
+                            <div class="model-name">LightGBM</div>
+                            <div class="model-score" id="scoreLgb">—</div>
+                            <div class="model-label">Mean OOF AUC</div>
+                        </div>
+                        <div class="model-card">
+                            <div class="model-name">XGBoost</div>
+                            <div class="model-score" id="scoreXgb">—</div>
+                            <div class="model-label">Mean OOF AUC</div>
+                        </div>
+                        <div class="model-card">
+                            <div class="model-name">CatBoost</div>
+                            <div class="model-score" id="scoreCat">—</div>
+                            <div class="model-label">Mean OOF AUC</div>
+                        </div>
+                        <div class="model-card model-card-ensemble">
+                            <div class="model-name">Weighted Ensemble</div>
+                            <div class="model-score" id="scoreEnsemble">—</div>
+                            <div class="model-label">Final Prediction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Conclusion -->
+        <section id="conclusion" class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">08</span>
+                    <h2 class="section-title">Conclusion</h2>
+                </div>
+                
+                <div class="conclusion-content">
+                    <div class="conclusion-findings">
+                        <h3>Key Findings</h3>
+                        <ol>
+                            <li><strong>Transaction volume matters:</strong> Escalated signals have ~6% more transactions on average (524 vs 494), making aggregate transaction count one of the strongest predictors.</li>
+                            <li><strong>Cash flow direction signals risk:</strong> Subtle differences in the kirim/chiqim ratio (incoming vs outgoing transactions) help distinguish escalated alerts. Escalated signals show slightly different outgoing transaction amounts.</li>
+                            <li><strong>Temporal stability:</strong> The escalation rate (~17%) is consistent across months, suggesting behavioral patterns rather than seasonal trends drive escalation decisions.</li>
+                            <li><strong>Recent activity intensity:</strong> The 30-day pre-signal transaction window shows higher activity for escalated alerts (81.2 vs 77.9 transactions), confirming that recent behavioral spikes are informative.</li>
+                            <li><strong>Amount distributions differ subtly:</strong> Escalated signals have lower mean transaction amounts (-0.116 vs -0.045), potentially indicating different financial behavior patterns.</li>
+                        </ol>
+                    </div>
+                    <div class="conclusion-approach">
+                        <h3>Our Methodology</h3>
+                        <p>We transformed these EDA insights into a robust prediction pipeline:</p>
+                        <ul>
+                            <li><strong>Comprehensive feature engineering:</strong> 246 features engineered and refined to the optimal Top-75 high-impact features via permutation and split importance filtering, eliminating noise.</li>
+                            <li><strong>Optuna Bayesian optimization:</strong> 200 trials tuning LightGBM, CatBoost, and XGBoost, identifying that shallow trees (depth 2–3) and heavy regularization prevent overfitting in low-signal regimes.</li>
+                            <li><strong>Multi-seed ensemble:</strong> 15 models (3 model families × 5 seeds) combined with out-of-fold AUC weighting, achieving <strong>0.6505 ROC-AUC</strong>.</li>
+                        </ul>
+                        <p>The EDA-driven feature engineering approach ensures that every feature captures a meaningful behavioral pattern observed in the data, rather than relying on blind automated feature generation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2026 Team 8BA88A02 — WIUT Hackathon</p>
+                <p class="footer-note">FinTech Alert Escalation Prediction | Exploratory Data Analysis Report</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="charts.js"></script>
+</body>
+</html>
