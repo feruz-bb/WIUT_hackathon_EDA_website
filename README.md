@@ -27,7 +27,7 @@ We are pleased to submit our solution for the **WIUT Hackathon Elimination Stage
    - Verifiably generates the exact predictions present in `team_8BA88A02.csv` bit-for-bit.
 
 3. **Public Interactive EDA Website:**
-   - **Live URL:** `[[URL](https://feruz-bb.github.io/WIUT_hackathon_EDA_website/)]`
+   - **Live URL:** `[URL](https://feruz-bb.github.io/WIUT_hackathon_EDA_website/)`
    - Features 12 interactive Chart.js visualizations, behavioral pattern breakdowns, and our 5-stage iterative experiment progression.
 
 ---
